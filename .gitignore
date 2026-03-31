@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+prices.parquet
+equity_curve.csv
+equity_curve.json
+daily_returns.csv
+.claude/
+venv/
+.venv/

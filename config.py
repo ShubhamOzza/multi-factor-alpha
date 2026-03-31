@@ -16,3 +16,4 @@ MOM_LOOKBACK    = 252
 MOM_SKIP        = 21
 VOL_WINDOW      = 21
 MIN_STOCKS      = 20
+OOS_START       = "2019-01-01"   # out-of-sample period start
