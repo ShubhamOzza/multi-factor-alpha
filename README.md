@@ -1,6 +1,6 @@
 # Multi-Factor Equity Alpha Model
 
-A professional-grade **long/short equity strategy** built from scratch in Python. The model combines three independent alpha signals — momentum, short-term reversal, and low-volatility — into a composite score that ranks 50 S&P 500 stocks every month. It goes long the top 15 and short the bottom 15, rebalances monthly, and measures everything a real quant fund would care about.
+A professional-grade **long/short equity strategy** built from scratch in Python. The model combines three independent alpha signals, momentum, short-term reversal, and low-volatility, into a composite score that ranks 50 S&P 500 stocks every month. It goes long the top 15 and short the bottom 15, rebalances monthly, and measures everything a real quant fund would care about.
 
 > **What does "long/short" mean?**
 > You *buy* the stocks you expect to go up (long) and *borrow-and-sell* the stocks you expect to go down (short). If you're right on both sides, you make money regardless of whether the overall market rises or falls.
@@ -43,23 +43,23 @@ Every 21 trading days (~once a month), the model runs through this process:
    (deduct 10 basis points transaction cost on every rebalance)
 ```
 
-The strategy is designed to be **market-neutral** — the longs and shorts roughly cancel out the market's overall movement, so it profits from *relative* differences between stocks rather than the direction of the market.
+The strategy is designed to be **market-neutral**, the longs and shorts roughly cancel out the market's overall movement, so it profits from *relative* differences between stocks rather than the direction of the market.
 
 ---
 
 ## The Three Alpha Signals
 
-### Signal 1 — Risk-Adjusted Momentum
+### Signal 1: Risk-Adjusted Momentum
 
-> *"Stocks that have been rising tend to keep rising — but adjust for how bumpy the ride was."*
+> *"Stocks that have been rising tend to keep rising, but adjust for how bumpy the ride was."*
 
-This is the classic **12-1 month momentum** factor: take a stock's return over the last 12 months, skipping the most recent month (to avoid a known short-term reversal effect at the 1-month horizon). Then divide by the stock's recent volatility — a steady +20% winner scores higher than a wild +20% winner with huge daily swings.
+This is the classic **12-1 month momentum** factor: take a stock's return over the last 12 months, skipping the most recent month (to avoid a known short-term reversal effect at the 1-month horizon). Then divide by the stock's recent volatility, a steady +20% winner scores higher than a wild +20% winner with huge daily swings.
 
 **Why it works:** Academic research (Jegadeesh & Titman 1993, Barroso & Santa-Clara 2015) shows that price momentum persists for 3-12 months in large-cap US stocks.
 
 ---
 
-### Signal 2 — Short-Term Reversal
+### Signal 2: Short-Term Reversal
 
 > *"Stocks that jumped sharply last month tend to give back some of those gains."*
 
@@ -69,11 +69,11 @@ This is the flip side of momentum. Over very short windows (1 month or less), st
 
 ---
 
-### Signal 3 — Low Volatility
+### Signal 3: Low Volatility
 
 > *"Boring stocks often outperform exciting stocks on a risk-adjusted basis."*
 
-Counterintuitively, low-volatility stocks tend to deliver better risk-adjusted returns than high-volatility stocks. This is the **low-vol anomaly** — possibly because investors overpay for lottery-ticket stocks and underpay for dull but steady ones. The model prefers stocks with small, consistent daily moves.
+Counterintuitively, low-volatility stocks tend to deliver better risk-adjusted returns than high-volatility stocks. This is the **low-vol anomaly**, possibly because investors overpay for lottery-ticket stocks and underpay for dull but steady ones. The model prefers stocks with small, consistent daily moves.
 
 **Why it works:** Baker, Bradley & Wurgler (2011) documented this anomaly across decades and markets.
 
@@ -89,12 +89,12 @@ Counterintuitively, low-volatility stocks tend to deliver better risk-adjusted r
 Starting with a hypothetical $100 invested at the beginning of 2015, this chart tracks how that investment grew (or shrank) through December 2023. Green shading shows periods above the starting value; red shows periods below.
 
 **Background color bands:**
-- Green bands = "Low volatility regime" — markets were calm during these stretches
-- Red bands = "High volatility regime" — markets were turbulent (think 2020 COVID, 2022 rate hikes)
+- Green bands = "Low volatility regime", markets were calm during these stretches
+- Red bands = "High volatility regime", markets were turbulent (think 2020 COVID, 2022 rate hikes)
 
 The regimes are calculated by measuring the strategy's own rolling 63-day volatility and splitting all dates into the bottom, middle, and top third. This tells you *when* the strategy was operating in difficult conditions versus easy ones.
 
-The gold dot marks the **peak NAV** — the highest value the portfolio ever reached.
+The gold dot marks the **peak NAV**, the highest value the portfolio ever reached.
 
 ---
 
@@ -108,7 +108,7 @@ This shows how far the portfolio has fallen from its previous all-time high at e
 **Why this matters:**
 A portfolio can have a decent average return but be psychologically brutal to hold if it regularly drops 30-40%. Professional investors care as much about *drawdown depth and duration* as they do about returns. A fund that falls -50% needs a +100% gain just to break even.
 
-The number annotated on the chart is the **Maximum Drawdown** — the single worst peak-to-trough decline over the entire 9-year backtest.
+The number annotated on the chart is the **Maximum Drawdown**, the single worst peak-to-trough decline over the entire 9-year backtest.
 
 ---
 
@@ -117,11 +117,11 @@ The number annotated on the chart is the **Maximum Drawdown** — the single wor
 ![Rolling Sharpe](charts/03_rolling_sharpe.png)
 
 **What you are looking at:**
-The Sharpe Ratio measures how much return you earn per unit of risk. A Sharpe of 1.0 means you earn 1% of annual excess return for every 1% of annual volatility — generally considered good. Above 2.0 is excellent; below 0 means you are losing money on a risk-adjusted basis.
+The Sharpe Ratio measures how much return you earn per unit of risk. A Sharpe of 1.0 means you earn 1% of annual excess return for every 1% of annual volatility, generally considered good. Above 2.0 is excellent; below 0 means you are losing money on a risk-adjusted basis.
 
 **Two windows:**
-- Blue line (63-day): Short-term Sharpe — how the strategy performed over the last 3 months. Noisy but responsive to recent conditions.
-- Gold line (252-day): Long-term Sharpe — the last 12 months, smoothed out. More stable and meaningful.
+- Blue line (63-day): Short-term Sharpe, how the strategy performed over the last 3 months. Noisy but responsive to recent conditions.
+- Gold line (252-day): Long-term Sharpe, the last 12 months, smoothed out. More stable and meaningful.
 
 The dotted green line at Sharpe = 1.0 is a quality threshold. When the gold line is above it, the strategy is in a strong regime. When both lines dip below 0, the strategy is losing money on a risk-adjusted basis.
 
@@ -139,9 +139,9 @@ Every cell is one month of returns. Each row is a calendar year (2015-2023); eac
 - Red = negative month (darker = bigger loss)
 
 **How to read it:**
-Scan vertically (down a column) to find seasonal patterns — does the strategy reliably struggle in certain months? Scan horizontally (across a row) to see which years were consistently good or bad.
+Scan vertically (down a column) to find seasonal patterns, does the strategy reliably struggle in certain months? Scan horizontally (across a row) to see which years were consistently good or bad.
 
-The Full Year column is the most important — it immediately shows annual P&L at a glance without needing to read every cell. This is one of the most widely used visualizations in professional quant research because it reveals the *texture* of returns: are gains steady and consistent, or do they come from a handful of explosive months?
+The Full Year column is the most important, it immediately shows annual P&L at a glance without needing to read every cell. This is one of the most widely used visualizations in professional quant research because it reveals the *texture* of returns: are gains steady and consistent, or do they come from a handful of explosive months?
 
 ---
 
@@ -159,10 +159,10 @@ A histogram of every single day's return over the entire backtest, stacked up. T
 | Mean | Average daily return |
 | Std | How spread out the daily returns are |
 | Skew | Negative = more and/or bigger bad days than good days |
-| Excess Kurtosis | >0 means "fat tails" — more extreme days than a normal distribution predicts |
+| Excess Kurtosis | >0 means "fat tails", more extreme days than a normal distribution predicts |
 | Red dashed line (95% VaR) | On your worst 5% of days, you lost at least this much |
 
-**Fat tails are normal** in finance — real market returns always deviate from the normal curve, especially in the extremes. This chart lets you see exactly how your strategy's tails compare to what a normal distribution would predict.
+**Fat tails are normal** in finance, real market returns always deviate from the normal curve, especially in the extremes. This chart lets you see exactly how your strategy's tails compare to what a normal distribution would predict.
 
 ---
 
@@ -183,13 +183,13 @@ An IC of +0.05 means there is a 5% rank correlation between today's signal score
 
 The **Mean IC and IC-IR** shown in the top-left corner:
 - Mean IC = average predictive power over the whole period
-- IC-IR = Mean IC divided by Std of IC — this is the signal's own Sharpe ratio. Higher is better.
+- IC-IR = Mean IC divided by Std of IC, this is the signal's own Sharpe ratio. Higher is better.
 
 ---
 
 ## Signal Analytics
 
-These six charts go deeper into signal *quality* — the kind of analysis presented in an internal quant research review at a systematic hedge fund.
+These six charts go deeper into signal *quality*, the kind of analysis presented in an internal quant research review at a systematic hedge fund.
 
 ---
 
@@ -200,7 +200,7 @@ These six charts go deeper into signal *quality* — the kind of analysis presen
 **What you are looking at:**
 The key question for any trading signal: *how far into the future does it predict?*
 
-Each bar shows the average IC at a different forecast horizon — from 1 day ahead all the way to 63 days (3 months). The error bars show the 95% confidence interval around each estimate, and the t-statistics above/below each bar measure statistical significance.
+Each bar shows the average IC at a different forecast horizon, from 1 day ahead all the way to 63 days (3 months). The error bars show the 95% confidence interval around each estimate, and the t-statistics above/below each bar measure statistical significance.
 
 **How to read it:**
 - Tall bars across all horizons = signal works at both short and long timeframes
@@ -221,14 +221,14 @@ This chart determines the optimal **rebalancing frequency**. If the signal's IC 
 A 3x3 grid showing how correlated the three signals are with each other. The diagonal (top-left to bottom-right) is always 1.00 because each signal is perfectly correlated with itself.
 
 **Why low correlations matter:**
-If all three signals were measuring the same thing, combining them would add no new information — the composite would just be a louder version of one signal. When signals are **orthogonal** (near-zero correlation), each brings *independent* information, which makes the composite more stable and consistent.
+If all three signals were measuring the same thing, combining them would add no new information, the composite would just be a louder version of one signal. When signals are **orthogonal** (near-zero correlation), each brings *independent* information, which makes the composite more stable and consistent.
 
 **Color coding:**
 - Blue = positive correlation
 - Red = negative correlation
 - Dark panel = near zero (independent)
 
-A near-zero correlation between Momentum and Short-Term Reversal is expected — momentum looks back 12 months while reversal looks back only 1 month. They are designed to capture different price phenomena.
+A near-zero correlation between Momentum and Short-Term Reversal is expected, momentum looks back 12 months while reversal looks back only 1 month. They are designed to capture different price phenomena.
 
 ---
 
@@ -247,9 +247,9 @@ The same 63-day rolling IC analysis from Chart 6, but plotted separately for all
 **What to look for:**
 - Which factor is consistently the strongest predictor?
 - Are there extended periods where one factor completely fails while others hold up? (This would suggest the composite is more robust than any single signal.)
-- Do all three move together (bad — means they are correlated) or do they diverge (good — independent)?
+- Do all three move together (bad, means they are correlated) or do they diverge (good, independent)?
 
-This is the **attribution layer** — it tells you which of your signals drove composite performance during any given stretch of time.
+This is the **attribution layer**, it tells you which of your signals drove composite performance during any given stretch of time.
 
 ---
 
@@ -266,7 +266,7 @@ The full backtest history is split into three equal-sized groups based on the st
 - High Vol = stormiest 33% (large daily swings, turbulent markets)
 
 **What it tells you:**
-A robust strategy should perform reasonably across all regimes, or at least clearly identify where it struggles. If a strategy only works in calm markets, that is a serious risk — quiet periods end suddenly and without warning.
+A robust strategy should perform reasonably across all regimes, or at least clearly identify where it struggles. If a strategy only works in calm markets, that is a serious risk, quiet periods end suddenly and without warning.
 
 Each bar shows the Sharpe Ratio for that regime, with the annualized return and number of trading days annotated directly on the bar.
 
@@ -280,7 +280,7 @@ Each bar shows the Sharpe Ratio for that regime, with the annualized return and 
 This chart answers a critical question: **is the strategy's Sharpe Ratio actually real, or did we just get lucky with the timing?**
 
 **How the bootstrap works:**
-Take the actual daily returns and randomly resample them 10,000 times with replacement, each time computing the Sharpe Ratio. This produces a distribution of Sharpe Ratios you would expect from random chance alone — with no skill involved.
+Take the actual daily returns and randomly resample them 10,000 times with replacement, each time computing the Sharpe Ratio. This produces a distribution of Sharpe Ratios you would expect from random chance alone, with no skill involved.
 
 **Reading the chart:**
 - Blue histogram = 10,000 bootstrap Sharpe estimates (the "chance" distribution)
@@ -289,7 +289,7 @@ Take the actual daily returns and randomly resample them 10,000 times with repla
 - p-value = probability that the observed Sharpe could occur by pure luck
 
 > A **p-value below 0.05** means there is less than a 5% chance the result is random.
-> The **p-value here is 0.52** — meaning the observed Sharpe is well within the range of what you would expect by chance. This is an honest finding that distinguishes rigorous research from overfit backtests.
+> The **p-value here is 0.52**, meaning the observed Sharpe is well within the range of what you would expect by chance. This is an honest finding that distinguishes rigorous research from overfit backtests.
 
 This is one of the most important charts in the analytics report. Most backtests never do this test.
 
@@ -304,12 +304,12 @@ The most important validation in any quantitative model: **does it work on data 
 
 The backtest is split at **January 1, 2019**:
 - Blue line = In-Sample (2015-2018): the period the model was designed and calibrated on
-- Gold line = Out-of-Sample (2019-2023): data the model never "saw" — the real test
+- Gold line = Out-of-Sample (2019-2023): data the model never "saw", the real test
 
 Both curves start at $100 independently so you can directly compare performance quality without one period's gains inflating the other's starting point.
 
 **Why this matters more than any other chart:**
-It is easy to build a model that looks great on historical data — you can always find parameters that fit the past. The real question is whether the signal works *going forward* on new data. A model that performs similarly in both periods is credible. A model that excels in-sample but collapses out-of-sample is overfit.
+It is easy to build a model that looks great on historical data, you can always find parameters that fit the past. The real question is whether the signal works *going forward* on new data. A model that performs similarly in both periods is credible. A model that excels in-sample but collapses out-of-sample is overfit.
 
 The annotations show Sharpe Ratio and annualized return for each period side by side.
 
@@ -321,19 +321,19 @@ The annotations show Sharpe Ratio and annualized return for each period side by 
 |---|---|---|
 | **Annualized Return** | -4.06% | The strategy lost ~4% per year on average |
 | **Annualized Volatility** | 12.98% | Typical annual swings in portfolio value |
-| **Sharpe Ratio** | -0.31 | Negative — returns did not compensate for risk |
+| **Sharpe Ratio** | -0.31 | Negative, returns did not compensate for risk |
 | **Sortino Ratio** | -0.45 | Same as Sharpe but only penalizes downside risk |
 | **Calmar Ratio** | -0.10 | Annualized return divided by max drawdown |
 | **Max Drawdown** | -41.70% | Worst peak-to-trough loss over 9 years |
-| **Win Rate** | 49.34% | Slightly below 50% — more losing days than winning |
+| **Win Rate** | 49.34% | Slightly below 50%, more losing days than winning |
 | **Tail Ratio** | 0.94 | Right tail slightly smaller than left tail |
 | **VaR 95% (daily)** | -1.35% | On 95% of days, daily loss was less than 1.35% |
 | **CVaR 95% (daily)** | -1.90% | Average loss on the worst 5% of days |
 | **Return Skewness** | -0.052 | Very slight negative skew |
-| **Excess Kurtosis** | 3.005 | Fat tails — more extreme days than normal |
+| **Excess Kurtosis** | 3.005 | Fat tails, more extreme days than normal |
 | **Bootstrap p-value** | 0.52 | Sharpe not statistically distinguishable from zero |
 
-> **A note on the negative returns:** The strategy underperformed during 2022 (the rate hike cycle was unusually brutal for momentum factors) and 2020 (COVID volatility crushed factor models globally). Negative backtest results are **not a bug** — they are an honest finding. The value of this project is the research infrastructure and analytics framework, not the specific backtest numbers. A real deployment would add sector neutralization, risk-parity position sizing, and live signal monitoring.
+> **A note on the negative returns:** The strategy underperformed during 2022 (the rate hike cycle was unusually brutal for momentum factors) and 2020 (COVID volatility crushed factor models globally). Negative backtest results are **not a bug**, they are an honest finding. The value of this project is the research infrastructure and analytics framework, not the specific backtest numbers. A real deployment would add sector neutralization, risk-parity position sizing, and live signal monitoring.
 
 ---
 
@@ -386,7 +386,7 @@ multi-factor-alpha/
 
 ---
 
-### Step 1 — Clone the repository
+### Step 1: Clone the repository
 
 ```bash
 git clone https://github.com/shubhamozza/multi-factor-alpha.git
@@ -395,7 +395,7 @@ cd multi-factor-alpha
 
 ---
 
-### Step 2 — Create a virtual environment
+### Step 2: Create a virtual environment
 
 ```bash
 python -m venv venv
@@ -415,7 +415,7 @@ source venv/bin/activate
 
 ---
 
-### Step 3 — Install dependencies
+### Step 3: Install dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -425,7 +425,7 @@ This installs: `numpy`, `pandas`, `scipy`, `matplotlib`, `yfinance`, `pyarrow`.
 
 ---
 
-### Step 4 — Run the full pipeline
+### Step 4: Run the full pipeline
 
 ```bash
 python main.py
@@ -435,7 +435,7 @@ The first run downloads 10 years of price data for 50 stocks (roughly 60 seconds
 
 ---
 
-### Step 5 — Generate individual charts
+### Step 5: Generate individual charts
 
 ```bash
 python generate_charts.py
@@ -480,10 +480,10 @@ All settings live in `config.py`. Change any value and re-run `python main.py`.
 
 The signals and methodology draw directly from peer-reviewed finance research:
 
-- **Jegadeesh, N. and Titman, S. (1993).** Returns to Buying Winners and Selling Losers. *Journal of Finance.* — The original 12-1 momentum paper.
-- **Jegadeesh, N. (1990).** Evidence of Predictable Behavior of Security Returns. *Journal of Finance.* — Short-term reversal factor.
-- **Baker, M., Bradley, B. and Wurgler, J. (2011).** Benchmarks as Limits to Arbitrage: Understanding the Low-Volatility Anomaly. *Financial Analysts Journal.* — Low-volatility anomaly.
-- **Barroso, P. and Santa-Clara, P. (2015).** Momentum Has Its Moments. *Journal of Financial Economics.* — Volatility-scaled momentum.
+- **Jegadeesh, N. and Titman, S. (1993).** Returns to Buying Winners and Selling Losers. *Journal of Finance.*. The original 12-1 momentum paper.
+- **Jegadeesh, N. (1990).** Evidence of Predictable Behavior of Security Returns. *Journal of Finance.*. Short-term reversal factor.
+- **Baker, M., Bradley, B. and Wurgler, J. (2011).** Benchmarks as Limits to Arbitrage: Understanding the Low-Volatility Anomaly. *Financial Analysts Journal.*. Low-volatility anomaly.
+- **Barroso, P. and Santa-Clara, P. (2015).** Momentum Has Its Moments. *Journal of Financial Economics.*. Volatility-scaled momentum.
 
 ---
 
